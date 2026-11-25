@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="fr" dir="ltr">
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -9,10 +10,254 @@
         * { box-sizing: border-box; }
         body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'IBM Plex Sans', sans-serif; padding-bottom: 80px; }
         
-        /* Header */
         header { background: var(--sf); padding: 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--ln); }
         header h1 { margin: 0; font-size: 22px; color: var(--ac); font-weight: 700; }
         .cart-btn { background: var(--ac); color: var(--acf); border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
         .cart-count { background: var(--wm); color: var(--ink); border-radius: 50%; padding: 2px 8px; font-size: 14px; }
         
-        /* Search & Filters */
+        .search-bar { padding: 10px; background: var(--sf); margin-bottom: 5px; }
+        .search-bar input { width: 100%; padding: 12px; border: 1px solid var(--ln); border-radius: 8px; font-size: 16px; outline: none; }
+        .categories { display: flex; gap: 10px; padding: 10px; overflow-x: auto; scrollbar-width: none; }
+        .categories::-webkit-scrollbar { display: none; }
+        .cat-btn { background: var(--sf); border: 1px solid var(--ln); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: 600; white-space: nowrap; color: var(--ink); }
+        .cat-btn.active { background: var(--ink); color: var(--sf); border-color: var(--ink); }
+
+        .contact { text-align: center; padding: 15px; background: var(--sf); margin: 10px; border-radius: 10px; border: 1px solid var(--ln); box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .contact a { color: var(--ink); text-decoration: none; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 8px; margin: 8px 0; font-size: 15px; }
+
+        .product-count { padding: 0 15px; color: var(--mut); font-size: 14px; margin-bottom: 5px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 10px; }
+        .product-card { background: var(--sf); padding: 10px; border-radius: 12px; border: 1px solid var(--ln); text-align: center; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+        
+        .product-card img { width: 100%; height: 150px; object-fit: contain; border-radius: 8px; margin-bottom: 10px; background: var(--tile); cursor: pointer; transition: transform 0.2s; }
+        .product-card img:active { transform: scale(0.95); }
+
+        .product-card h3 { font-size: 14px; margin: 5px 0; line-height: 1.3; height: 36px; overflow: hidden; }
+        .product-card p { font-size: 12px; color: var(--mut); margin: 0 0 10px; }
+        .add-btn { background: var(--ac); color: var(--acf); border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }
+        .add-btn.added { background: #25D366; }
+        
+        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--sf); border-top: 1px solid var(--ln); padding: 15px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .bottom-bar-info { display: flex; flex-direction: column; }
+        .bottom-bar-info span { font-size: 16px; font-weight: bold; }
+        .view-cart-btn { background: var(--wm); color: var(--ink); border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+
+        #cart-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
+        .cart-content { background: var(--sf); border-radius: 12px; width: 90%; max-width: 400px; max-height: 90vh; display: flex; flex-direction: column; }
+        .cart-header { padding: 20px 20px 10px 20px; border-bottom: 1px solid var(--ln); }
+        .cart-header h2 { margin: 0; text-align: center; }
+        .cart-items-container { flex: 1; overflow-y: auto; padding: 15px 20px; }
+        .cart-footer { padding: 15px 20px 20px 20px; border-top: 1px solid var(--ln); background: #fafafa; border-radius: 0 0 12px 12px;}
+        .form-group { margin-bottom: 12px; }
+        .form-group input { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid var(--ln); border-radius: 8px; font-size: 15px; }
+        .checkout-btn { background: #25D366; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 5px; font-size: 16px; }
+
+        #image-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 2000; cursor: zoom-out; }
+        #image-modal img { max-width: 95%; max-height: 90%; border-radius: 12px; background: var(--sf); padding: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>EURO DARI</h1>
+        <button class="cart-btn" onclick="openCart()">
+            Panier <span class="cart-count" id="cart-count">0</span>
+        </button>
+    </header>
+
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Rechercher un produit..." oninput="filterProducts()">
+    </div>
+
+    <div class="categories" id="category-container"></div>
+
+    <div class="contact">
+        <a href="tel:+33758833766">📞 Appeler : 07 58 83 37 66</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=9%20Place%20du%20Val%20d%27Aran%2C%2031770%20Colomiers" target="_blank">📍 9 PLACE DU VAL D'ARAN 31770 COLOMIERS, TOULOUSE</a>
+    </div>
+
+    <div class="product-count" id="product-count">Chargement...</div>
+    <div class="products-grid" id="products-container"></div>
+
+    <div class="bottom-bar" id="bottom-bar" style="display:none;">
+        <div class="bottom-bar-info">
+            <span id="bottom-count">0 article</span>
+        </div>
+        <button class="view-cart-btn" onclick="openCart()">Voir le panier 🛒</button>
+    </div>
+
+    <div id="cart-modal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>Votre Panier</h2>
+            </div>
+            <div class="cart-items-container">
+                <div id="cart-items"></div>
+            </div>
+            <div class="cart-footer">
+                <h3 style="margin-top:0; font-size: 16px;">Informations de Livraison</h3>
+                <div class="form-group"><input type="text" id="cust-name" placeholder="Nom complet (Obligatoire)"></div>
+                <div class="form-group"><input type="text" id="cust-phone" placeholder="Numéro de téléphone (Obligatoire)"></div>
+                <div class="form-group"><input type="text" id="cust-address" placeholder="Adresse complète (Obligatoire)"></div>
+                <button class="checkout-btn" onclick="sendOrder()">Commander via WhatsApp</button>
+                <button onclick="closeCart()" style="background:none; border:none; color:red; margin-top:10px; width:100%; cursor:pointer; font-weight:bold; padding:5px;">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="image-modal" onclick="closeImageModal()">
+        <img id="modal-img" src="" alt="Aperçu">
+    </div>
+
+    <script>
+        const MY_WHATSAPP_NUMBER = "33750037162"; 
+        
+        const products = [
+            { name: "Eau minérale Cristaline 50cl", weight: "Réf. 001 · carton de 15", category: "Eaux", image: "Cristaline050ml.jpg.jpg" },
+            { name: "Eau minérale Hayati 1.5L", weight: "Réf. 002 · carton de 6", category: "Eaux", image: "Hayati.jpg.jpg" },
+            { name: "Huile d'olive Marrakech", weight: "Réf. 003 · 1L", category: "Huiles", image: "Marrakech.jpg.jpg" },
+            { name: "Huile d'olive Simon", weight: "Réf. 004 · 1L", category: "Huiles", image: "Simon.jpg.jpg" },
+            { name: "Huile d'olive Wad Sous", weight: "Réf. 005 · 1L", category: "Huiles", image: "wad_sous.jpg.jpg" },
+            { name: "Huile de table Zhar 1", weight: "Réf. 006 · 5L", category: "Huiles", image: "zhar1.jpg.jpg" }
+        ];
+
+        let cart = [];
+        let currentCategory = "Tout";
+        let searchQuery = "";
+
+        function init() {
+            renderCategories();
+            filterProducts();
+        }
+
+        function renderCategories() {
+            const categories = ["Tout", ...new Set(products.map(p => p.category))];
+            const container = document.getElementById('category-container');
+            container.innerHTML = categories.map(cat => 
+                `<button class="cat-btn ${cat === currentCategory ? 'active' : ''}" onclick="setCategory('${cat}')">${cat}</button>`
+            ).join('');
+        }
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            renderCategories();
+            filterProducts();
+        }
+
+        function filterProducts() {
+            searchQuery = document.getElementById('search-input').value.toLowerCase();
+            const container = document.getElementById('products-container');
+            
+            const filtered = products.filter(p => {
+                const matchCategory = currentCategory === "Tout" || p.category === currentCategory;
+                const matchSearch = p.name.toLowerCase().includes(searchQuery) || p.weight.toLowerCase().includes(searchQuery);
+                return matchCategory && matchSearch;
+            });
+
+            document.getElementById('product-count').innerText = `${filtered.length} produits`;
+
+            if(filtered.length === 0) {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--mut);">Aucun produit trouvé.</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map((product) => {
+                const originalIndex = products.findIndex(p => p.name === product.name);
+                const inCart = cart.find(item => item.name === product.name);
+                const isAdded = inCart ? 'added' : '';
+                const btnText = inCart ? `✓ Ajouté (${inCart.qty})` : `+ Ajouter`;
+
+                return `
+                    <div class="product-card">
+                        <img src="${product.image}" alt="${product.name}" onclick="openImageModal('${product.image}')" onerror="this.src='https://via.placeholder.com/150?text=Image'">
+                        <h3>${product.name}</h3>
+                        <p>${product.weight}</p>
+                        <button class="add-btn ${isAdded}" onclick="addToCart(${originalIndex})">${btnText}</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openImageModal(src) {
+            document.getElementById('modal-img').src = src;
+            document.getElementById('image-modal').style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            document.getElementById('image-modal').style.display = 'none';
+        }
+
+        function addToCart(index) {
+            const product = products[index];
+            const existingItem = cart.find(item => item.name === product.name);
+            
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ name: product.name, qty: 1 });
+            }
+            updateCartUI();
+            filterProducts(); 
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+            filterProducts();
+        }
+
+        function updateCartUI() {
+            const count = cart.reduce((total, item) => total + item.qty, 0);
+            
+            document.getElementById('cart-count').innerText = count;
+            
+            const bottomBar = document.getElementById('bottom-bar');
+            if(count > 0) {
+                bottomBar.style.display = 'flex';
+                document.getElementById('bottom-count').innerText = `${count} article${count > 1 ? 's' : ''}`;
+            } else {
+                bottomBar.style.display = 'none';
+            }
+
+            const cartItemsDiv = document.getElementById('cart-items');
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p style="text-align:center; color:var(--mut); padding: 20px;">Votre panier est vide</p>';
+                return;
+            }
+            
+            cartItemsDiv.innerHTML = cart.map((item, index) => `
+                <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center; border-bottom:1px solid var(--ln); padding-bottom:10px;">
+                    <div>
+                        <div style="font-weight:bold; font-size:15px;">${item.name}</div>
+                        <div style="font-size:14px; color:var(--mut); margin-top:3px;">Quantité: ${item.qty}</div>
+                    </div>
+                    <button onclick="removeFromCart(${index})" style="background:#fee;color:red;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;font-weight:bold;">X</button>
+                </div>
+            `).join('');
+        }
+
+        function openCart() { document.getElementById('cart-modal').style.display = 'flex'; }
+        function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+
+        function sendOrder() {
+            if (cart.length === 0) return alert("Votre panier est vide!");
+            
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const address = document.getElementById('cust-address').value;
+            
+            if (!name || !phone || !address) {
+                return alert("Veuillez remplir toutes les informations de livraison (Nom, Téléphone, Adresse).");
+            }
+
+            let message = `*Nouvelle Commande - EURO DARI*\n\n👤 Client: ${name}\n📞 Tel: ${phone}\n📍 Adresse: ${address}\n\n*Produits:*\n`;
+            cart.forEach(item => message += `- ${item.name} (Quantité: ${item.qty})\n`);
+            
+            window.open(`https://wa.me/${MY_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        init();
+        updateCartUI();
+    </script>
+</body>
+</html>
