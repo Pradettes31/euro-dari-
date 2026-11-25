@@ -1,372 +1,250 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>EURO DARI</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#eef2f1;--sf:#fff;--ink:#16232a;--mut:#5d6f75;--ac:#1b6b5a;--acf:#fff;--wm:#f2b134;--ln:#d6dfdd;--tile:#e3ebe9;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#101a1d;--sf:#18262a;--ink:#e8f0ee;--mut:#9bb0b0;--ac:#3fb59a;--acf:#06201a;--ln:#2a3c40;--tile:#203237}}
-:root[data-theme="dark"]{color-scheme:dark;--bg:#101a1d;--sf:#18262a;--ink:#e8f0ee;--mut:#9bb0b0;--ac:#3fb59a;--acf:#06201a;--ln:#2a3c40;--tile:#203237}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,Arial,sans-serif;line-height:1.5;padding-bottom:90px}
-header{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 14px 8px;border-bottom:1px solid var(--ln)}
-.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-h1{font-size:1.25rem;margin:0}
-.cartbtn{border:0;background:var(--ac);color:var(--acf);font:inherit;font-weight:600;padding:8px 14px;border-radius:999px;cursor:pointer}
-.cartbtn b{background:var(--wm);color:#16232a;border-radius:999px;padding:0 8px;margin-inline-start:6px}
-.contact{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
-.contact a{flex:1 1 220px;display:block;text-align:center;text-decoration:none;color:var(--ink);background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:10px 14px;font-size:.85rem;font-weight:600}
-.search{width:100%;margin-top:10px;padding:11px 14px;border-radius:12px;border:1px solid var(--ln);background:var(--sf);color:var(--ink);font:inherit}
-.row{display:flex;gap:8px;margin-top:10px;align-items:center}
-.chips{display:flex;gap:6px;overflow-x:auto;flex:1;padding-bottom:2px}
-.chip{flex:none;border:1px solid var(--ln);background:var(--sf);color:var(--ink);font:inherit;font-size:.85rem;padding:5px 12px;border-radius:999px;cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-select{font:inherit;font-size:.85rem;padding:5px 8px;border-radius:8px;border:1px solid var(--ln);background:var(--sf);color:var(--ink)}
-main{padding:14px;max-width:1000px;margin:auto}
-.hint{color:var(--mut);font-size:.85rem;margin:0 0 10px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}
-.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-.pic{height:120px;display:grid;place-items:center;font-size:3rem;background:var(--tile);position:relative}
-.tag{position:absolute;top:8px;inset-inline-start:8px;background:var(--wm);color:#16232a;font-size:.72rem;font-weight:700;padding:1px 8px;border-radius:6px}
-.bd{padding:10px;display:flex;flex-direction:column;gap:4px;flex:1}
-.nm{font-weight:600;font-size:.95rem;margin:0}
-.ds{color:var(--mut);font-size:.8rem;margin:0}
-.pr{margin-top:auto;display:flex;align-items:baseline;gap:6px;font-weight:700}
-.add{border:0;background:var(--ac);color:var(--acf);font:inherit;font-weight:600;padding:8px;border-radius:9px;cursor:pointer;margin-top:8px}
-.empty{text-align:center;color:var(--mut);padding:40px 10px}
-#ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;z-index:20}
-#ov.on{display:block}
-#sheet{position:fixed;bottom:0;inset-inline:0;max-height:85%;background:var(--sf);border-radius:18px 18px 0 0;z-index:21;display:none;flex-direction:column;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));max-width:600px;margin:auto}
-#sheet.on{display:flex}
-.items{overflow:auto;flex:1}
-.it{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--ln)}
-.it .e{font-size:1.6rem}
-.it .t{flex:1;font-size:.9rem}
-.qty{display:flex;align-items:center;gap:8px}
-.qty button{width:28px;height:28px;border-radius:50%;border:1px solid var(--ln);background:var(--bg);color:var(--ink);font:inherit;cursor:pointer}
-.tot{display:flex;justify-content:space-between;font-weight:700;font-size:1.05rem;margin:12px 0 8px}
-.act{display:flex;gap:8px}
-.act a,.act button{flex:1;text-align:center;text-decoration:none;border:1px solid var(--ln);background:var(--bg);color:var(--ink);font:inherit;font-weight:600;padding:10px;border-radius:10px;cursor:pointer}
-.act a{background:var(--ac);color:var(--acf);border-color:var(--ac)}
-.ghost{background:none;border:0;color:var(--mut);font:inherit;cursor:pointer}
-/* شريط السلة العائم في الأسفل */
-#floatbar{position:fixed;bottom:0;inset-inline:0;z-index:15;background:var(--ac);color:var(--acf);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));display:none;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 -4px 20px rgba(0,0,0,.15);max-width:1000px;margin:auto}
-#floatbar.on{display:flex}
-#floatbar .fb-info{display:flex;flex-direction:column;font-size:.85rem}
-#floatbar .fb-info b{font-size:1rem}
-#floatbar button{border:0;background:var(--wm);color:#16232a;font:inherit;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer}
-button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--wm);outline-offset:2px}
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>EURO DARI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg:#eef2f1; --sf:#fff; --ink:#16232a; --mut:#5d6f75; --ac:#1b6b5a; --acf:#fff; --wm:#f2b134; --ln:#d6dfdd; --tile:#e3ebe9; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'IBM Plex Sans', sans-serif; padding-bottom: 80px; }
+        
+        /* Header */
+        header { background: var(--sf); padding: 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--ln); }
+        header h1 { margin: 0; font-size: 22px; color: var(--ac); font-weight: 700; }
+        .cart-btn { background: var(--ac); color: var(--acf); border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .cart-count { background: var(--wm); color: var(--ink); border-radius: 50%; padding: 2px 8px; font-size: 14px; }
+        
+        /* Search & Filters */
+        .search-bar { padding: 10px; background: var(--sf); margin-bottom: 5px; }
+        .search-bar input { width: 100%; padding: 12px; border: 1px solid var(--ln); border-radius: 8px; font-size: 16px; outline: none; }
+        .categories { display: flex; gap: 10px; padding: 10px; overflow-x: auto; scrollbar-width: none; }
+        .categories::-webkit-scrollbar { display: none; }
+        .cat-btn { background: var(--sf); border: 1px solid var(--ln); padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: 600; white-space: nowrap; color: var(--ink); }
+        .cat-btn.active { background: var(--ink); color: var(--sf); border-color: var(--ink); }
+
+        /* Contact Info */
+        .contact { text-align: center; padding: 15px; background: var(--sf); margin: 10px; border-radius: 10px; border: 1px solid var(--ln); box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .contact a { color: var(--ink); text-decoration: none; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 8px; margin: 8px 0; font-size: 15px; }
+
+        /* Products Grid */
+        .product-count { padding: 0 15px; color: var(--mut); font-size: 14px; margin-bottom: 5px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 10px; }
+        .product-card { background: var(--sf); padding: 10px; border-radius: 12px; border: 1px solid var(--ln); text-align: center; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+        .product-card img { width: 100%; height: 150px; object-fit: contain; border-radius: 8px; margin-bottom: 10px; background: var(--tile); }
+        .product-card h3 { font-size: 14px; margin: 5px 0; line-height: 1.3; height: 36px; overflow: hidden; }
+        .product-card p { font-size: 12px; color: var(--mut); margin: 0 0 10px; }
+        .price { font-weight: 700; font-size: 18px; margin-bottom: 10px; color: var(--ac); }
+        .add-btn { background: var(--ac); color: var(--acf); border: none; padding: 10px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }
+        .add-btn.added { background: #25D366; }
+        
+        /* Bottom Cart Bar */
+        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--sf); border-top: 1px solid var(--ln); padding: 15px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .bottom-bar-info { display: flex; flex-direction: column; }
+        .bottom-bar-info span:first-child { font-size: 14px; color: var(--mut); }
+        .bottom-bar-info span:last-child { font-size: 18px; font-weight: bold; }
+        .view-cart-btn { background: var(--wm); color: var(--ink); border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+
+        /* Modal */
+        #cart-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
+        .cart-content { background: var(--sf); padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; max-height: 85vh; overflow-y: auto; }
+        .cart-content h2 { margin-top: 0; text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        .form-group input { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid var(--ln); border-radius: 8px; font-size: 15px; }
+        .checkout-btn { background: #25D366; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; font-size: 16px; }
+    </style>
 </head>
 <body>
-<header>
-  <div class="top"><h1 id="title">EURO DARI</h1><button class="cartbtn" id="openCart">Panier<b id="cnt">0</b></button></div>
-  <input class="search" id="q" type="search" placeholder="Rechercher un produit ou une catégorie…" autocomplete="off">
-  <div class="row"><div class="chips" id="chips"></div>
-  <select id="sort" aria-label="Trier"><option value="rel">Pertinence</option><option value="az">A → Z</option></select></div>
-</header>
-<main>
-  <div class="contact">
-    <a href="tel:+33758833766">📞 Appeler : 33758833766</a>
-    <a href="https://www.google.com/maps/search/?api=1&query=9%20Place%20du%20Val%20d%27Aran%2C%2031770%20Colomiers" target="_blank" rel="noopener">📍 9 PLACE DU VAL D'ARAN<br>31770 COLOMIERS, TOULOUSE</a>
-  </div>
-  <p class="hint" id="hint"></p>
-  <div class="grid" id="grid"></div>
-</main>
 
-<!-- شريط السلة العائم -->
-<div id="floatbar">
-  <div class="fb-info">
-    <span id="fbcount">0 article</span>
-    <b id="fbtotal">0,00 €</b>
-  </div>
-  <button id="fbopen">Voir le panier 🛒</button>
-</div>
+    <header>
+        <h1>EURO DARI</h1>
+        <button class="cart-btn" onclick="openCart()">
+            Panier <span class="cart-count" id="cart-count">0</span>
+        </button>
+    </header>
 
-<div id="ov"></div>
-<section id="sheet" aria-label="Panier"></section>
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Rechercher un produit..." oninput="filterProducts()">
+    </div>
 
-<script>
-const STORE = {name:"EURO DARI", phone:"33750037162"};
-const ALL = "Tout";
-const fmt = n => new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(n);
-const CATS = ["Huiles","Eaux","Boissons","Épicerie","Bouillons","Semoules et farines","Couscous et orge","Riz","Conserves","Nouilles","Desserts et snacks","Thés","Fruits secs et dattes","Charcuterie halal","Emballages"];
-const PRODUCTS = [
- ["001","Huile d'olive Oud Souss 1 L","Huiles",5.6,15,"🫒"],
- ["004","Huile de tournesol 1 L vitamine E","Huiles",1.9,15,"🌻"],
- ["005","Huile de tournesol 5 L vitamine E","Huiles",9.3,3,"🌻"],
- ["064","Sauce algérienne 5 L (seau)","Épicerie",18,1,"🫙"],
- ["007","Eau minérale Darida 1,5 L","Eaux",0.352,6,"💧"],
- ["008","Eau minérale Cautiva 50 cl","Eaux",0.253,24,"💧"],
- ["011","Amandes crues avec peau Pareil","Épicerie",7.6,1,"🌰"],
- ["020","Haricots blancs La Cochura bocal 580 g","Épicerie",0.85,12,"🫘"],
- ["021","Haricots blancs La Cochura 1 kg","Épicerie",1.85,10,"🫘"],
- ["022","Haricots rouges La Cochura bocal 580 g","Épicerie",0.95,12,"🫘"],
- ["027","Anis en grains 100 g","Épicerie",0.95,36,"🌿"],
- ["028","Arôme Maggi 200 ml","Bouillons",1.55,1,"🧂"],
- ["070","Bouillon Ideal safran","Bouillons",0.25,1,"🧂"],
- ["043","Flocons d'avoine Quaker 500 g","Épicerie",2.2,1,"🥣"],
- ["044","Sucre blanc 1 kg","Épicerie",0.9,1,"🍬"],
- ["050","Semoule fine MayMouna Finot 5 kg","Semoules et farines",4.7,1,"🌾"],
- ["029","Riz parfumé thaï Foco 1re coupe 20 kg","Riz",24,1,"🍚"],
- ["030","Riz parfumé thaï Foco 2e coupe 20 kg","Riz",21.5,1,"🍚"],
- ["034","Riz long Plebeyo 1 kg","Riz",1.78,1,"🍚"],
- ["035","Riz parfumé Red Horse 20 kg","Riz",31.5,1,"🍚"],
- ["036","Thon à la tomate Pescamar, pack de 3","Conserves",1.88,32,"🐟"],
- ["037","Thon à la tomate Pescamar 85 g","Conserves",0.7,100,"🐟"],
- ["038","Thon à l'huile Pescamar 85 g","Conserves",0.8,100,"🐟"],
- ["039","Thon à l'huile Pescamar 85 g, pack de 3","Conserves",2.15,32,"🐟"],
- ["040","Thon tomate piquante Pescamar, pack de 3","Conserves",1.88,32,"🐟"],
- ["041","Thon tomate piquante Pescamar 85 g","Conserves",0.7,100,"🐟"],
- ["071","Poulet en conserve Campera 850 g","Conserves",3.65,12,"🥫"],
- ["031","Flan Ideal fraise 24 × 6 g","Desserts et snacks",8.9,1,"🍮"],
- ["032","Flan Ideal chocolat 24 × 6 g","Desserts et snacks",8.9,1,"🍮"],
- ["033","Flan Ideal vanille 24 × 6 g","Desserts et snacks",8.9,1,"🍮"],
- ["053","Bouchées chocolat 150 g","Desserts et snacks",0.88,15,"🍫"],
- ["055","Bouchées citron 150 g","Desserts et snacks",0.88,15,"🍋"],
- ["045","Yaourt à boire pistache 1 L","Boissons",1.6,1,"🥛"],
- ["046","Yaourt à boire fraise 1 L","Boissons",1.6,1,"🍓"],
- ["047","Yaourt à boire grenade 500 ml","Boissons",1.1,1,"🥛"],
- ["048","Yaourt à boire grenade 1 L","Boissons",1.6,1,"🥛"],
- ["049","Yaourt à boire pistache 500 ml","Boissons",1.1,1,"🥛"],
- ["051","Yaourt à boire tropical 500 ml","Boissons",1.1,1,"🥭"],
- ["057","Sacs verts 70 %","Emballages",2,1,"🛍️"],
- ["058","Sacs bleus","Emballages",2,1,"🛍️"],
- ["059","Sacs 27 × 32 (1 000 pièces)","Emballages",8,1,"🛍️"],
- ["060","Sacs 35 × 50 (200 pièces)","Emballages",2,1,"🛍️"],
- ["061","Sacs 50 × 60","Emballages",4.5,1,"🛍️"],
- ["062","Sacs SAM 15 × 20 (500 pièces)","Emballages",3.5,1,"🛍️"],
- ["063","Sacs sans anse 30 × 40 (1 000 pièces)","Emballages",8.5,1,"🛍️"],
- ["N01","Beurre de cacahuète Swartberg 10 kg","Épicerie",null,1,"🥜"],
- ["N02","Clous de girofle entiers 50 g","Épicerie",null,1,"🌿"],
- ["N03","Chorba marocaine Idéal 110 g","Épicerie",null,1,"🍲"],
- ["N04","Mortadelle de bœuf et volaille La Campera 600 g","Charcuterie halal",null,1,"🥩"],
- ["N05","Raïb Atlas 1 L","Boissons",null,1,"🥛"],
- ["N06","Alboroto Diana maïs caramel","Desserts et snacks",null,1,"🍿"],
- ["N07","Indomie légumes 75 g","Nouilles",null,1,"🍜"],
- ["N08","Indomie Mi Goreng 85 g","Nouilles",null,1,"🍜"],
- ["N09","Indomie goût poulet","Nouilles",null,1,"🍜"],
- ["N10","Nouilles Long Life cuisson rapide","Nouilles",null,1,"🍜"],
- ["N11","Cocosette Nestlé, boîte de 21 × 50 g","Desserts et snacks",null,1,"🍪"],
- ["N12","Manicho Caramel, boîte de 24","Desserts et snacks",null,1,"🍫"],
- ["N13","Pandebono Colmaíz 1 kg (mélange en poudre)","Épicerie",null,1,"🥯"],
- ["N14","Celta +Protéine saveur café","Boissons",null,1,"🥛"],
- ["N15","Celta +Protéine saveur cacao","Boissons",null,1,"🥛"],
- ["N16","Milo Nestlé, boisson chocolatée en poudre","Boissons",null,1,"🍫"],
- ["N17","Bouillon Calnort saveur crevette","Bouillons",null,1,"🦐"],
- ["N18","Bouillon Calnort saveur mouton","Bouillons",null,1,"🐑"],
- ["N19","Bouillon Calnort saveur bœuf","Bouillons",null,1,"🐄"],
- ["N20","Bouillon Promolac goût poulet 1 kg","Bouillons",null,1,"🐔"],
- ["N21","Maggi Seasoning, 100 cubes","Bouillons",null,1,"🧂"],
- ["N22","Bouillon Delissia saveur mouton 480 g","Bouillons",null,1,"🐑"],
- ["N23","Casabe Goya (galettes de manioc) 960 g","Épicerie",null,1,"🫓"],
- ["N24","Huile de tournesol Urzante 25 L","Huiles",null,1,"🌻"],
- ["N25","Thon à l'huile de tournesol Pescamar, grand format","Conserves",null,1,"🐟"],
- ["N26","Semoule de blé dur moyenne MayMouna 5 kg","Semoules et farines",null,1,"🌾"],
- ["N27","Farine de blé tendre MayMouna 5 kg","Semoules et farines",null,1,"🌾"],
- ["N28","Farines MayMouna blé intégrale et orge 5 kg","Semoules et farines",null,1,"🌾"],
- ["N29","Couscous Dari moyen 1 kg","Couscous et orge",null,1,"🍲"],
- ["N30","Couscous Dari complet 1 kg","Couscous et orge",null,1,"🍲"],
- ["N31","Sakssou Al Belboula Dari (couscous d'orge) 500 g","Couscous et orge",null,1,"🍲"],
- ["N32","Tchicha Chatar fine 1 kg","Couscous et orge",null,1,"🌾"],
- ["N33","Tchicha Chatar moyenne 1 kg","Couscous et orge",null,1,"🌾"],
- ["N34","Thé vert Sidi Lala 71 71, 200 g","Thés",null,1,"🍵"],
- ["N35","Thé vert Magmer 9371+ Extra Chaara, 200 g","Thés",null,1,"🍵"],
- ["N36","Thé vert El Taj 9371 Extra, 250 g","Thés",null,1,"🍵"],
- ["N37","Thé Kabir gingembre goût miel, 12 sachets","Thés",null,1,"🫚"],
- ["N38","Eau de fleur d'oranger Samra 245 ml","Épicerie",null,1,"🌸"],
- ["N39","Laben Atlas 1 L","Boissons",null,1,"🥛"],
- ["N40","Dattes fraîches en vrac","Fruits secs et dattes",null,1,"🌴"],
- ["N41","Figues sèches en vrac","Fruits secs et dattes",null,1,"🟤"],
- ["N42","Mélange apéritif maïs et cacahuètes grillés","Desserts et snacks",null,1,"🌽"],
- ["N43","Pruneaux Tagine (origine France)","Fruits secs et dattes",null,1,"🍇"],
- ["N44","Dattes en branches Zahia 1 kg (Tunisie, cat. 1)","Fruits secs et dattes",null,1,"🌴"],
- ["N45","Figues sèches en barquette","Fruits secs et dattes",null,1,"🟤"],
- ["N46","Raisins secs flame 700 g","Fruits secs et dattes",null,1,"🍇"],
- ["N47","Pâte de dattes Dat'cha 500 g (Tunisie)","Fruits secs et dattes",null,1,"🟫"],
- ["N48","Amandes en coque","Épicerie",null,1,"🌰"],
- ["N49","Haricots à œil noir (black eye beans), sac de 25 kg","Épicerie",null,1,"🫘"],
- ["N50","Lentilles La Cochura (Lenteja Castellana)","Épicerie",null,1,"🫘"],
- ["N51","Cheveux d'ange Tayba 500 g","Nouilles",null,1,"🍜"],
- ["N52","Fèves sèches La Cochura","Épicerie",null,1,"🫘"],
- ["N53","Lentilles cuites La Cochura, bocal 540 g","Épicerie",null,1,"🫘"],
- ["N54","Pois cassés La Cochura 500 g","Épicerie",null,1,"🫛"],
- ["N55","Levure instantanée MayMouna 500 g","Épicerie",null,1,"🍞"],
- ["N56","Levure instantanée MayMouna 125 g","Épicerie",null,1,"🍞"],
- ["N57","Levure chimique Idéal spéciale pâtisserie 80 g (10 sachets)","Épicerie",null,1,"🎂"],
- ["N58","Farine pâtissière MayMouna 5 kg","Semoules et farines",null,1,"🌾"],
- ["N59","Tortillas wraps Tayba (~30 cm)","Épicerie",null,1,"🌯"],
- ["N60","Riz parfumé thaï Royal Halah 20 kg","Riz",null,1,"🍚"],
- ["N61","Haricots rouges Barco","Épicerie",null,1,"🫘"],
- ["N62","Semoule de blé dur Halima 5 kg (fine / moyenne)","Semoules et farines",null,1,"🌾"],
- ["N63","Maïs concassé El Dorado 1 kg","Épicerie",null,1,"🌽"],
- ["N64","Haricots rouges (Frijol seda), sac de 25 kg","Épicerie",null,1,"🫘"],
- ["N65","Biscuits salés Saltín Noel fromage et beurre 385 g","Desserts et snacks",null,1,"🧀"],
- ["N66","Alfajores Cachafaz chocolat blanc, boîte de 12","Desserts et snacks",null,1,"🍪"],
- ["N67","Riz basmati Caçarola Premium 5 kg","Riz",null,1,"🍚"],
- ["N68","Couscous moyen Al Itqane 1 kg","Couscous et orge",null,1,"🍲"],
- ["N69","Figues sèches Shifa Lerida 5 kg (Turquie)","Fruits secs et dattes",null,1,"🟤"],
- ["N70","Dchicha Mazyana grosse 1 kg (semoule d'orge dure)","Couscous et orge",null,1,"🌾"],
- ["N71","Thiacry Kumba 500 g","Épicerie",null,1,"🌾"],
- ["N72","Aji-no-moto (glutamate) 500 g","Épicerie",null,1,"🧂"],
- ["N73","Chocolat de table Corona Tradicional 200 g","Boissons",null,1,"🍫"],
- ["N74","Biscuits Festival chocolat 403 g","Desserts et snacks",null,1,"🍪"],
- ["N75","Biscuits Festival fraise 403 g","Desserts et snacks",null,1,"🍓"],
- ["N76","Biscuits Festival citron 403 g","Desserts et snacks",null,1,"🍋"],
- ["N77","Biscuits Festival vanille 403 g","Desserts et snacks",null,1,"🍪"],
- ["N78","Biscuits Festival noix de coco 403 g","Desserts et snacks",null,1,"🥥"],
- ["N79","Crackers Saltín Noel traditionnels 300 g","Desserts et snacks",null,1,"🍘"],
- ["N80","Alfajor Arcor Clásicos chocolat noir 50 g, boîte","Desserts et snacks",null,1,"🍫"],
- ["N81","Nectar Cofrutos multivitamines 12 fruits 1 L","Boissons",null,1,"🧃"],
- ["N82","Miel de romarin Muria 1 kg","Épicerie",null,1,"🍯"],
- ["N83","Miel d'eucalyptus Manahil Al Maghrib 1 kg","Épicerie",null,1,"🍯"]
-].map(([ref,n,c,unit,u,e],i)=>({id:i+1,ref,n,c,e,p:unit==null?null:Math.round(unit*u*100)/100,d:"Réf. "+ref+(u>1?` · carton de ${u}`:"")})).sort((a,b)=>CATS.indexOf(a.c)-CATS.indexOf(b.c));
+    <div class="categories" id="category-container">
+    </div>
 
-// ===== STATE =====
-let cart = JSON.parse(localStorage.getItem('cart')||'{}');
-let cat = ALL, query = '', sortMode = 'rel';
+    <div class="contact">
+        <a href="tel:+33758833766">📞 Appeler : 07 58 83 37 66</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=9%20Place%20du%20Val%20d%27Aran%2C%2031770%20Colomiers" target="_blank">📍 9 PLACE DU VAL D'ARAN 31770 COLOMIERS, TOULOUSE</a>
+    </div>
 
-const $ = s => document.querySelector(s);
-const grid = $('#grid'), chips = $('#chips'), hint = $('#hint');
-const sheet = $('#sheet'), ov = $('#ov'), floatbar = $('#floatbar');
+    <div class="product-count" id="product-count">Chargement...</div>
+    <div class="products-grid" id="products-container"></div>
 
-// ===== CHIPS =====
-function renderChips(){
-  chips.innerHTML = '';
-  [ALL,...CATS].forEach(c=>{
-    const b = document.createElement('button');
-    b.className = 'chip';
-    b.textContent = c;
-    b.setAttribute('aria-pressed', c===cat);
-    b.onclick = ()=>{ cat = c; renderChips(); render(); };
-    chips.appendChild(b);
-  });
-}
+    <div class="bottom-bar" id="bottom-bar" style="display:none;">
+        <div class="bottom-bar-info">
+            <span id="bottom-count">0 article</span>
+            <span id="bottom-total">0,00 €</span>
+        </div>
+        <button class="view-cart-btn" onclick="openCart()">Voir le panier 🛒</button>
+    </div>
 
-// ===== RENDER PRODUCTS =====
-function render(){
-  const term = query.trim().toLowerCase();
-  let list = PRODUCTS.filter(p => {
-    if(cat!==ALL && p.c!==cat) return false;
-    if(term && !(p.n.toLowerCase().includes(term) || p.c.toLowerCase().includes(term))) return false;
-    return true;
-  });
-  if(sortMode==='az') list.sort((a,b)=>a.n.localeCompare(b.n,'fr'));
-  hint.textContent = list.length + ' produit' + (list.length>1?'s':'') + (cat!==ALL?' · '+cat:'');
-  if(!list.length){
-    grid.innerHTML = '<div class="empty">Aucun produit trouvé 😕</div>';
-    return;
-  }
-  grid.innerHTML = list.map(p=>{
-    const qty = cart[p.id]||0;
-    return `<div class="card">
-      <div class="pic">${p.e}</div>
-      <div class="bd">
-        <h3 class="nm">${p.n}</h3>
-        <p class="ds">${p.d}</p>
-        ${p.p!=null?`<div class="pr">${fmt(p.p)}</div>`:'<div class="pr" style="color:var(--mut);font-size:.85rem">Prix en magasin</div>'}
-        <button class="add" data-id="${p.id}">${qty>0?'✓ Ajouté ('+qty+')':'+ Ajouter'}</button>
-      </div>
-    </div>`;
-  }).join('');
-  grid.querySelectorAll('.add').forEach(b=>{
-    b.onclick = ()=>{ addToCart(+b.dataset.id); };
-  });
-}
+    <div id="cart-modal">
+        <div class="cart-content">
+            <h2>Votre Panier</h2>
+            <div id="cart-items"></div>
+            <hr style="border:0; border-top:1px solid var(--ln); margin: 15px 0;">
+            <h3>Informations de Livraison</h3>
+            <div class="form-group"><input type="text" id="cust-name" placeholder="Nom complet"></div>
+            <div class="form-group"><input type="text" id="cust-phone" placeholder="Numéro de téléphone"></div>
+            <div class="form-group"><input type="text" id="cust-address" placeholder="Adresse complète"></div>
+            <button class="checkout-btn" onclick="sendOrder()">Commander via WhatsApp</button>
+            <button onclick="closeCart()" style="background:none; border:none; color:red; margin-top:15px; width:100%; cursor:pointer; font-weight:bold; padding:10px;">Fermer</button>
+        </div>
+    </div>
 
-// ===== CART =====
-function addToCart(id){
-  cart[id] = (cart[id]||0) + 1;
-  saveCart(); updateUI();
-  if(!sheet.classList.contains('on')) render();
-}
-function saveCart(){ localStorage.setItem('cart', JSON.stringify(cart)); }
-function cartCount(){ return Object.values(cart).reduce((a,b)=>a+b,0); }
-function cartTotal(){
-  return Object.entries(cart).reduce((sum,[id,q])=>{
-    const p = PRODUCTS.find(x=>x.id==id);
-    return sum + (p&&p.p!=null ? p.p*q : 0);
-  },0);
-}
+    <script>
+        const MY_WHATSAPP_NUMBER = "33750037162"; 
+        
+        const products = [
+            { name: "Eau minérale Cristaline 50cl", weight: "Réf. 001 · carton de 15", price: 0.30, category: "Eaux", image: "Cristaline050ml.jpg.jpg" },
+            { name: "Eau minérale Hayati 1.5L", weight: "Réf. 002 · carton de 6", price: 0.50, category: "Eaux", image: "Hayati.jpg.jpg" },
+            { name: "Huile d'olive Marrakech", weight: "Réf. 003 · 1L", price: 10.00, category: "Huiles", image: "Marrakech.jpg.jpg" },
+            { name: "Huile d'olive Simon", weight: "Réf. 004 · 1L", price: 15.00, category: "Huiles", image: "Simon.jpg.jpg" },
+            { name: "Huile d'olive Wad Sous", weight: "Réf. 005 · 1L", price: 12.00, category: "Huiles", image: "wad_sous.jpg.jpg" },
+            { name: "Huile de table Zhar 1", weight: "Réf. 006 · 5L", price: 8.00, category: "Huiles", image: "zhar1.jpg.jpg" }
+        ];
 
-// ===== UPDATE UI (bar + count) =====
-function updateUI(){
-  const count = cartCount(), total = cartTotal();
-  $('#cnt').textContent = count;
-  if(count>0){
-    floatbar.classList.add('on');
-    $('#fbcount').textContent = count + ' article' + (count>1?'s':'');
-    $('#fbtotal').textContent = total>0 ? fmt(total) : 'Prix en magasin';
-  } else {
-    floatbar.classList.remove('on');
-  }
-}
+        let cart = [];
+        let currentCategory = "Tout";
+        let searchQuery = "";
 
-// ===== CART SHEET =====
-function openSheet(){
-  if(cartCount()===0){
-    sheet.innerHTML = `<div class="empty">Votre panier est vide 🛒<br><button class="cartbtn" style="margin-top:12px" onclick="closeSheet()">Continuer les achats</button></div>`;
-    sheet.classList.add('on'); ov.classList.add('on');
-    return;
-  }
-  let html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h2 style="margin:0;font-size:1.1rem">Votre panier</h2><button class="ghost" onclick="closeSheet()">✕</button></div><div class="items">';
-  let hasPrice = false;
-  Object.entries(cart).forEach(([id,q])=>{
-    const p = PRODUCTS.find(x=>x.id==id);
-    if(!p) return;
-    if(p.p!=null) hasPrice = true;
-    html += `<div class="it">
-      <span class="e">${p.e}</span>
-      <div class="t"><b>${p.n}</b><br><small style="color:var(--mut)">${p.p!=null?fmt(p.p):'Prix en magasin'}</small></div>
-      <div class="qty">
-        <button onclick="changeQty(${p.id},-1)">−</button>
-        <span>${q}</span>
-        <button onclick="changeQty(${p.id},1)">+</button>
-      </div>
-    </div>`;
-  });
-  html += '</div>';
-  const total = cartTotal();
-  html += `<div class="tot"><span>Total</span><span>${hasPrice?fmt(total):'—'}</span></div>`;
-  html += `<div class="act"><button onclick="clearCart()">Vider</button><a id="waBtn" href="#" target="_blank">Commander sur WhatsApp</a></div>`;
-  sheet.innerHTML = html;
-  sheet.classList.add('on'); ov.classList.add('on');
-  buildWhatsApp();
-}
-function buildWhatsApp(){
-  let msg = 'Bonjour ' + STORE.name + ',\nje souhaite commander :\n\n';
-  Object.entries(cart).forEach(([id,q])=>{
-    const p = PRODUCTS.find(x=>x.id==id);
-    if(p) msg += `• ${q} × ${p.n}${p.p!=null?' — '+fmt(p.p*q):''}\n`;
-  });
-  const total = cartTotal();
-  if(total>0) msg += `\nTotal estimé : ${fmt(total)}`;
-  msg += '\n\nMerci !';
-  document.getElementById('waBtn').href = 'https://wa.me/'+STORE.phone+'?text='+encodeURIComponent(msg);
-}
-function closeSheet(){ sheet.classList.remove('on'); ov.classList.remove('on'); render(); }
-function changeQty(id,d){
-  cart[id] = (cart[id]||0) + d;
-  if(cart[id]<=0) delete cart[id];
-  saveCart(); updateUI();
-  if(sheet.classList.contains('on')) openSheet();
-  else render();
-}
-function clearCart(){ if(confirm('Vider le panier ?')){ cart={}; saveCart(); updateUI(); closeSheet(); } }
+        function init() {
+            renderCategories();
+            filterProducts();
+        }
 
-// ===== EVENTS =====
-$('#q').addEventListener('input', e=>{ query=e.target.value; render(); });
-$('#sort').addEventListener('change', e=>{ sortMode=e.target.value; render(); });
-$('#openCart').onclick = openSheet;
-$('#fbopen').onclick = openSheet;
-ov.onclick = closeSheet;
+        function renderCategories() {
+            const categories = ["Tout", ...new Set(products.map(p => p.category))];
+            const container = document.getElementById('category-container');
+            container.innerHTML = categories.map(cat => 
+                `<button class="cat-btn ${cat === currentCategory ? 'active' : ''}" onclick="setCategory('${cat}')">${cat}</button>`
+            ).join('');
+        }
 
-// ===== INIT =====
-renderChips();
-render();
-updateUI();
-</script>
+        function setCategory(cat) {
+            currentCategory = cat;
+            renderCategories();
+            filterProducts();
+        }
+
+        function filterProducts() {
+            searchQuery = document.getElementById('search-input').value.toLowerCase();
+            const container = document.getElementById('products-container');
+            
+            const filtered = products.filter(p => {
+                const matchCategory = currentCategory === "Tout" || p.category === currentCategory;
+                const matchSearch = p.name.toLowerCase().includes(searchQuery) || p.weight.toLowerCase().includes(searchQuery);
+                return matchCategory && matchSearch;
+            });
+
+            document.getElementById('product-count').innerText = `${filtered.length} produits`;
+
+            if(filtered.length === 0) {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--mut);">Aucun produit trouvé.</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map((product) => {
+                const originalIndex = products.findIndex(p => p.name === product.name);
+                const inCart = cart.find(item => item.name === product.name);
+                const isAdded = inCart ? 'added' : '';
+                const btnText = inCart ? `✓ Ajouté (${inCart.qty})` : `+ Ajouter`;
+
+                return `
+                    <div class="product-card">
+                        <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/150?text=Image'">
+                        <h3>${product.name}</h3>
+                        <p>${product.weight}</p>
+                        <div class="price">${product.price.toFixed(2)} €</div>
+                        <button class="add-btn ${isAdded}" onclick="addToCart(${originalIndex})">${btnText}</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addToCart(index) {
+            const product = products[index];
+            const existingItem = cart.find(item => item.name === product.name);
+            
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ name: product.name, price: product.price, qty: 1 });
+            }
+            updateCartUI();
+            filterProducts(); 
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+            filterProducts();
+        }
+
+        function updateCartUI() {
+            const count = cart.reduce((total, item) => total + item.qty, 0);
+            const total = cart.reduce((total, item) => total + (item.price * item.qty), 0);
+            
+            document.getElementById('cart-count').innerText = count;
+            
+            const bottomBar = document.getElementById('bottom-bar');
+            if(count > 0) {
+                bottomBar.style.display = 'flex';
+                document.getElementById('bottom-count').innerText = `${count} article${count > 1 ? 's' : ''}`;
+                document.getElementById('bottom-total').innerText = `${total.toFixed(2)} €`;
+            } else {
+                bottomBar.style.display = 'none';
+            }
+
+            const cartItemsDiv = document.getElementById('cart-items');
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p style="text-align:center; color:var(--mut);">Votre panier est vide</p>';
+                return;
+            }
+            
+            cartItemsDiv.innerHTML = cart.map((item, index) => `
+                <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center; border-bottom:1px solid var(--ln); padding-bottom:10px;">
+                    <div>
+                        <div style="font-weight:bold;">${item.name}</div>
+                        <div style="font-size:14px; color:var(--mut);">${item.qty} x ${item.price.toFixed(2)} €</div>
+                    </div>
+                    <button onclick="removeFromCart(${index})" style="background:#fee;color:red;border:none;padding:8px 12px;border-radius:5px;cursor:pointer;font-weight:bold;">X</button>
+                </div>
+            `).join('');
+        }
+
+        function openCart() { document.getElementById('cart-modal').style.display = 'flex'; }
+        function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+
+        function sendOrder() {
+            if (cart.length === 0) return alert("Votre panier est vide!");
+            
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const address = document.getElementById('cust-address').value;
+            
+            if (!name || !phone || !address) return alert("Veuillez remplir toutes les informations de livraison.");
+
+            let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            let message = `*Nouvelle Commande - EURO DARI*\n\n👤 Client: ${name}\n📞 Tel: ${phone}\n📍 Adresse: ${address}\n\n*Produits:*\n`;
+            cart.forEach(item => message += `- ${item.name} (x${item.qty}) : ${(item.price * item.qty).toFixed(2)} €\n`);
+            message += `\n*Total: ${total.toFixed(2)} €*`;
+            
+            window.open(`https://wa.me/${MY_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        init();
+        updateCartUI();
+    </script>
 </body>
 </html>
